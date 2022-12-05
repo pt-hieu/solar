@@ -1,3 +1,5 @@
+import './tailwind.css'
+
 export const parameters = {
   actions: { argTypesRegex: '^on[A-Z].*' },
   controls: {
@@ -7,3 +9,6 @@ export const parameters = {
     },
   },
 };
+
+/** @type {Array<import('@storybook/react').DecoratorFn>} */
+export const decorators = [(Story) => (<Story />)]
