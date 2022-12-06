@@ -1,7 +1,8 @@
 import { VariantProps, cva } from 'class-variance-authority'
+import { AnimatePresence, motion } from 'framer-motion'
 import { MouseEvent, PropsWithChildren } from 'react'
 
-const styles = cva(['rounded-md', 'duration-100', 'focus:scale-95'], {
+const styles = cva(['rounded-md', 'duration-100'], {
   variants: {
     intent: {
       primary: ['bg-sky-500', 'hover:bg-sky-400', 'text-white'],
@@ -55,7 +56,7 @@ export const Button = ({
   const disabledGhost = isDisabled && intent === 'ghost'
 
   return (
-    <button
+    <motion.button
       className={styles({
         intent: isDisabled ? undefined : intent,
         disabled: disabledGhost ? undefined : isDisabled,
@@ -65,20 +66,26 @@ export const Button = ({
       })}
       disabled={isDisabled || undefined}
       onClick={onClick}
+      whileTap={{ scale: 0.95 }}
     >
-      {icon && !loading ? (
-        <span className={`${icon} mr-2 translate-y-[0.5px]`} />
-      ) : null}
-
-      {loading ? (
-        <span
-          // @ts-ignore
-          style={{ '--fa-animation-timing': 'ease-in-out' }}
-          className="fa-solid fa-circle-notch fa-spin mr-2 relative top-[0.5px]"
-        />
-      ) : null}
+      <AnimatePresence mode="wait">
+        {icon || loading ? (
+          <motion.span
+            // @ts-ignore
+            style={{ '--fa-animation-timing': 'ease-in-out' }}
+            className={`${
+              loading ? 'fa-solid fa-circle-notch fa-spin' : icon
+            } relative top-[0.5px] mr-2`}
+            key={loading ? 'loading' : 'not-loading'}
+            initial={{ maxWidth: '0px', opacity: 0 }}
+            animate={{ maxWidth: '30px', opacity: 1 }}
+            exit={{ maxWidth: '0px', opacity: 0 }}
+            transition={{ ease: 'linear' }}
+          />
+        ) : null}
+      </AnimatePresence>
 
       {children}
-    </button>
+    </motion.button>
   )
 }

@@ -8,14 +8,19 @@ export default {
   argTypes: {
     intent: {
       control: {
-        type: 'select',
+        type: 'radio',
         options: ['primary', 'outline', 'danger', 'ghost'],
       },
     },
     size: {
       control: {
-        type: 'select',
+        type: 'radio',
         options: ['normal', 'compact'],
+      },
+    },
+    loading: {
+      control: {
+        type: 'boolean',
       },
     },
   },
