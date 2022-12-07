@@ -5,7 +5,7 @@ import { FieldPath, useFormContext, useFormState } from 'react-hook-form'
 
 import { handleForwardRef } from '../helper/ref'
 
-const styles = cva([], {
+export const styles = cva([], {
   variants: {
     layout: {
       row: 'grid grid-cols-[min-content,1fr] gap-8',
@@ -27,14 +27,11 @@ const styles = cva([], {
       true: ['ring-rose-500', 'focus:!ring-rose-500'],
     },
   },
-  defaultVariants: {
-    layout: 'row',
-  },
 })
 
 type Props<T extends Record<string, any>> = {
   type?: Omit<HTMLInputTypeAttribute, 'radio' | 'checkbox'>
-  label?: string
+  label: string
   placeholder?: string
   name: FieldPath<T>
   required?: boolean
