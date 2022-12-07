@@ -40,12 +40,14 @@ type Props = {
   onClick?: (e: MouseEvent<HTMLButtonElement>) => void | Promise<void>
   className?: string
   icon?: `fa fa-${string}`
+  type?: 'button' | 'submit' | 'reset'
 } & Omit<VariantProps<typeof styles>, 'disabledGhost'>
 
 export const Button = ({
   intent,
   children,
   disabled,
+  type,
   className,
   size,
   icon,
@@ -67,6 +69,7 @@ export const Button = ({
       disabled={isDisabled || undefined}
       onClick={onClick}
       whileTap={{ scale: 0.95 }}
+      type={type}
     >
       <AnimatePresence mode="wait" initial={false}>
         {icon || loading ? (
