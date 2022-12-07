@@ -68,7 +68,7 @@ export const Button = ({
       onClick={onClick}
       whileTap={{ scale: 0.95 }}
     >
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" initial={false}>
         {icon || loading ? (
           <motion.span
             // @ts-ignore
