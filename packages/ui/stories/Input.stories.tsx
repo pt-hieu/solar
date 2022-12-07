@@ -2,9 +2,9 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
 import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import * as yup from 'yup'
 
 import { Input } from '../components/Input'
+import { createSchema, pipe, required, string } from '../helper/form'
 
 export default {
   component: Input,
@@ -25,8 +25,8 @@ export default {
 } as ComponentMeta<typeof Input>
 
 type FormData = { value: string }
-const schema = yup.object().shape({
-  value: yup.string().required('$$ is required'),
+const schema = createSchema<FormData>({
+  value: pipe(required)(string()),
 })
 
 const Template: ComponentStory<typeof Input<FormData>> = (args) => {
