@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { ForwardedRef, HTMLInputTypeAttribute, forwardRef, useId } from 'react'
 import { FieldPath, useFormContext, useFormState } from 'react-hook-form'
 
-import { handleForwardRef } from '../helper/ref'
+import { handleForwardRef } from '../helpers/ref'
 
 export const styles = cva([], {
   variants: {

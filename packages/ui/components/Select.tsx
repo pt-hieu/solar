@@ -5,7 +5,7 @@ import { FieldPath, useFormContext, useFormState } from 'react-hook-form'
 
 import { styles as inputStyles } from './Input'
 
-import { handleForwardRef } from '../helper/ref'
+import { handleForwardRef } from '../helpers/ref'
 
 const styles = cva([], {
   variants: {

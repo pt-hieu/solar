@@ -4,7 +4,7 @@ import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { Input } from '../components/Input'
-import { createSchema, pipe, required, string } from '../helper/form'
+import { createSchema, pipe, required, string } from '../helpers/form'
 
 export default {
   component: Input,

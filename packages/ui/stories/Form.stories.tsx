@@ -4,7 +4,7 @@ import React from 'react'
 import { Button } from '../components/Button'
 import { Form } from '../components/Form'
 import { Input } from '../components/Input'
-import { createSchema, pipe, required, string } from '../helper/form'
+import { createSchema, pipe, required, string } from '../helpers/form'
 
 export default {
   component: Form,
