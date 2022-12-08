@@ -145,7 +145,7 @@ export const Select = forwardRef(function <
         className={styles({
           _focus: isOpened,
           className: inputStyles({
-            inputClassname: true,
+            _element: 'input',
             className: 'cursor-pointer relative',
           }),
         })}

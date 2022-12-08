@@ -11,7 +11,7 @@ export const styles = cva([], {
       row: 'grid grid-cols-[min-content,1fr] gap-8',
       column: 'flex flex-col gap-1',
     },
-    inputClassname: {
+    _inputClassname: {
       true: [
         'border-none',
         'ring-1',
@@ -23,7 +23,20 @@ export const styles = cva([], {
         'w-full',
       ],
     },
-    hasError: {
+
+    _element: {
+      input: [
+        'border-none',
+        'ring-1',
+        'ring-slate-400',
+        'focus:ring-sky-500',
+        'rounded-[3px]',
+        'px-3',
+        'py-2',
+        'w-full',
+      ],
+    },
+    _hasError: {
       true: ['ring-rose-500', 'focus:!ring-rose-500'],
     },
   },
@@ -76,7 +89,7 @@ const Input = forwardRef(function <
 
       <div>
         <input
-          className={styles({ inputClassname: true, hasError })}
+          className={styles({ _element: 'input', _hasError: hasError })}
           id={id}
           // @ts-expect-error: false positive
           type={type}

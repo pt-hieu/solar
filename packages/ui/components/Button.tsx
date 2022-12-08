@@ -19,7 +19,7 @@ const styles = cva(['rounded-md', 'duration-100'], {
     disabled: {
       true: ['text-white', 'bg-slate-500', 'hover:bg-slate-500'],
     },
-    disabledGhost: {
+    _disabledGhost: {
       true: ['text-slate-500', 'bg-transparent', 'hover:bg-transparent'],
     },
     loading: {
@@ -41,7 +41,7 @@ type Props = {
   className?: string
   icon?: `fa fa-${string}`
   type?: 'button' | 'submit' | 'reset'
-} & Omit<VariantProps<typeof styles>, 'disabledGhost'>
+} & Omit<VariantProps<typeof styles>, `_${string}`>
 
 export const Button = ({
   intent,
@@ -64,7 +64,7 @@ export const Button = ({
         disabled: disabledGhost ? undefined : isDisabled,
         className,
         size,
-        disabledGhost,
+        _disabledGhost: disabledGhost,
       })}
       disabled={isDisabled || undefined}
       onClick={onClick}
