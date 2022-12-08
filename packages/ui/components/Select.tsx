@@ -12,11 +12,10 @@ const styles = cva([], {
     _focus: {
       true: ['!ring-sky-500'],
     },
-    _optionContainer: {
-      true: 'py-2 bg-white w-full ring-1 ring-sky-500 rounded-[3px] shadow-md',
-    },
-    _optionItem: {
-      true: 'px-3 py-1 hover:bg-sky-500 hover:text-white',
+    _element: {
+      'option-container':
+        'py-2 bg-white w-full ring-1 ring-sky-500 rounded-[3px] shadow-md',
+      'option-item': 'px-3 py-1 hover:bg-sky-500 hover:text-white',
     },
   },
 })
@@ -43,16 +42,25 @@ type Option =
 type Props<T extends Record<string, any>> = {
   label: string
   name: FieldPath<T>
+  options: Option[]
   placeholder?: string
   required?: boolean
-  options: Option[]
+  multiple?: boolean
 } & Omit<VariantProps<typeof styles>, `_${string}`> &
   Pick<VariantProps<typeof inputStyles>, 'layout'>
 
 export const Select = forwardRef(function <
   T extends Record<string, any> = Record<string, any>,
 >(
-  { label, placeholder, name, options, layout = 'row', required }: Props<T>,
+  {
+    label,
+    placeholder,
+    name,
+    options,
+    layout = 'row',
+    required,
+    multiple,
+  }: Props<T>,
   propsRef: ForwardedRef<HTMLInputElement>,
 ) {
   const {
@@ -68,21 +76,44 @@ export const Select = forwardRef(function <
   const error = errors[name]
   const hasError = !!error
 
-  const [isOpened, setIsOpened] = useState(false)
-  const [internalValue, setInternalValue] = useState(defaultValues?.[name])
-
   const parsedOptions = options.map((o) => {
     if (typeof o === 'string') return { label: o, value: o }
     return o
   })
 
-  const onItemSelect = useCallback(
-    ({ label, value }: { value: string; label: string }) =>
-      () => {
-        setInternalValue(label)
-        setValue(name, value as any)
-      },
-    [name],
+  const [isOpened, setIsOpened] = useState(false)
+  const [selectedOptions, setSelectedOptions] = useState<
+    Extract<Option, { label: string }>[]
+  >(() => {
+    const initValue = defaultValues?.[name]
+    if (!initValue) return []
+
+    return parsedOptions.filter((option) => option.value === initValue)
+  })
+
+  const selectItem = useCallback(
+    (inputOption: Extract<Option, { label: string }>) => () => {
+      if (multiple) {
+        setSelectedOptions((selectedOptions) => {
+          let results = [...selectedOptions]
+
+          if (!selectedOptions.some((opt) => opt.value === inputOption.value))
+            results.push(inputOption)
+          else
+            results = results.filter((opt) => opt.value !== inputOption.value)
+
+          setValue(name, results.map((r) => r.value) as any)
+
+          return results
+        })
+
+        return
+      }
+
+      setSelectedOptions([inputOption])
+      setValue(name, inputOption.value as any)
+    },
+    [name, multiple],
   )
 
   return (
@@ -119,8 +150,8 @@ export const Select = forwardRef(function <
           }),
         })}
       >
-        {internalValue}
-        {!internalValue && placeholder && (
+        {selectedOptions.map((o) => o.label).join(', ')}
+        {!selectedOptions.length && placeholder && (
           <span className="text-slate-500">{placeholder}</span>
         )}
 
@@ -137,7 +168,7 @@ export const Select = forwardRef(function <
           {isOpened && (
             <motion.div
               className={styles({
-                _optionContainer: true,
+                _element: 'option-container',
                 class: 'absolute top-[calc(100%+10px)] left-0',
               })}
               style={{ transformOrigin: 'bottom left' }}
@@ -149,12 +180,23 @@ export const Select = forwardRef(function <
               }}
               transition={{ ease: 'linear', duration: 0.15 }}
             >
-              {parsedOptions.map(({ label, value }, index) => (
+              {parsedOptions.map(({ label, value }) => (
                 <div
-                  onClick={onItemSelect({ label, value })}
-                  className={styles({ _optionItem: true })}
+                  onClick={selectItem({ label, value })}
+                  className={styles({
+                    _element: 'option-item',
+                  })}
                   key={value}
                 >
+                  {multiple && (
+                    <span
+                      className={`fa fa-check mr-2 text-xs ${
+                        selectedOptions.some((opt) => opt.value === value)
+                          ? 'visible'
+                          : 'invisible'
+                      }`}
+                    />
+                  )}
                   {label}
                 </div>
               ))}
