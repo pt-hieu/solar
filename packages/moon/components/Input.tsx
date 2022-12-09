@@ -9,7 +9,7 @@ import {
 } from 'react'
 import { FieldPath, useFormContext, useFormState } from 'react-hook-form'
 
-import { handleForwardRef } from '../helpers/ref'
+import { mergeRefs } from '../helpers/ref'
 import { FormField } from '../private/FormField'
 
 export const styles = cva([], {
@@ -71,10 +71,7 @@ const Input = forwardRef(function <
           type={type}
           placeholder={placeholder}
           {...regis}
-          ref={(ele) => {
-            formRef(ele)
-            handleForwardRef(ref, ele)
-          }}
+          ref={mergeRefs([formRef, ref])}
         />
 
         <AnimatePresence>

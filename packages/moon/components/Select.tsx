@@ -14,7 +14,7 @@ import { useClickAway } from 'react-use'
 
 import { styles as inputStyles } from './Input'
 
-import { handleForwardRef } from '../helpers/ref'
+import { mergeRefs } from '../helpers/ref'
 import { FormField } from '../private/FormField'
 
 const styles = cva([], {
@@ -146,15 +146,7 @@ export const Select = forwardRef(function <
       required={required}
       onClick={() => setIsOpened(true)}
     >
-      <input
-        ref={(ele) => {
-          ref(ele)
-          handleForwardRef(propsRef, ele)
-        }}
-        type="text"
-        hidden
-        {...regis}
-      />
+      <input ref={mergeRefs([ref, propsRef])} type="text" hidden {...regis} />
 
       <div
         onClick={() => setIsOpened((o) => !o)}
