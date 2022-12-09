@@ -1,29 +1,19 @@
 import { type VariantProps, cva } from 'class-variance-authority'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ForwardedRef, HTMLInputTypeAttribute, forwardRef, useId } from 'react'
+import {
+  ComponentProps,
+  ForwardedRef,
+  HTMLInputTypeAttribute,
+  forwardRef,
+  useId,
+} from 'react'
 import { FieldPath, useFormContext, useFormState } from 'react-hook-form'
 
 import { handleForwardRef } from '../helpers/ref'
+import { FormField } from '../private/FormField'
 
 export const styles = cva([], {
   variants: {
-    layout: {
-      row: 'grid grid-cols-[min-content,1fr] gap-8',
-      column: 'flex flex-col gap-1',
-    },
-    _inputClassname: {
-      true: [
-        'border-none',
-        'ring-1',
-        'ring-slate-400',
-        'focus:ring-sky-500',
-        'rounded-[3px]',
-        'px-3',
-        'py-2',
-        'w-full',
-      ],
-    },
-
     _element: {
       input: [
         'border-none',
@@ -44,23 +34,15 @@ export const styles = cva([], {
 
 type Props<T extends Record<string, any>> = {
   type?: Omit<HTMLInputTypeAttribute, 'radio' | 'checkbox'>
-  label: string
   placeholder?: string
   name: FieldPath<T>
-  required?: boolean
-} & Omit<VariantProps<typeof styles>, 'inputClassname' | 'hasError'>
+} & Pick<ComponentProps<typeof FormField>, 'label' | 'layout' | 'required'> &
+  Omit<VariantProps<typeof styles>, `_${string}`>
 
 const Input = forwardRef(function <
   T extends Record<string, any> = Record<string, any>,
 >(
-  {
-    type = 'text',
-    label,
-    layout = 'row',
-    required,
-    name,
-    placeholder,
-  }: Props<T>,
+  { type = 'text', label, required, name, placeholder, layout }: Props<T>,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   const id = useId()
@@ -74,19 +56,13 @@ const Input = forwardRef(function <
   const hasError = !!error
 
   return (
-    <div className={styles({ layout, className: 'my-3' })}>
-      {label && (
-        <label
-          className={`${layout === 'row' ? 'mt-2' : ''} ${
-            hasError ? 'text-rose-500' : ''
-          }`}
-          htmlFor={id}
-        >
-          {label}
-          {required ? '*' : ''}
-        </label>
-      )}
-
+    <FormField
+      label={label}
+      hasError={hasError}
+      id={id}
+      layout={layout}
+      required={required}
+    >
       <div>
         <input
           className={styles({ _element: 'input', _hasError: hasError })}
@@ -114,7 +90,7 @@ const Input = forwardRef(function <
           )}
         </AnimatePresence>
       </div>
-    </div>
+    </FormField>
   )
 })
 

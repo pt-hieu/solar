@@ -1,11 +1,18 @@
 import { VariantProps, cva } from 'class-variance-authority'
 import { AnimatePresence, motion } from 'framer-motion'
-import { ForwardedRef, forwardRef, useCallback, useState } from 'react'
+import {
+  ComponentProps,
+  ForwardedRef,
+  forwardRef,
+  useCallback,
+  useState,
+} from 'react'
 import { FieldPath, useFormContext, useFormState } from 'react-hook-form'
 
 import { styles as inputStyles } from './Input'
 
 import { handleForwardRef } from '../helpers/ref'
+import { FormField } from '../private/FormField'
 
 const styles = cva([], {
   variants: {
@@ -47,7 +54,7 @@ type Props<T extends Record<string, any>> = {
   required?: boolean
   multiple?: boolean
 } & Omit<VariantProps<typeof styles>, `_${string}`> &
-  Pick<VariantProps<typeof inputStyles>, 'layout'>
+  Pick<ComponentProps<typeof FormField>, 'label' | 'layout' | 'required'>
 
 export const Select = forwardRef(function <
   T extends Record<string, any> = Record<string, any>,
@@ -117,7 +124,13 @@ export const Select = forwardRef(function <
   )
 
   return (
-    <div className={inputStyles({ layout })}>
+    <FormField
+      label={label}
+      hasError={hasError}
+      layout={layout}
+      required={required}
+      onClick={() => setIsOpened(true)}
+    >
       <input
         ref={(ele) => {
           ref(ele)
@@ -127,18 +140,6 @@ export const Select = forwardRef(function <
         hidden
         {...regis}
       />
-
-      {label && (
-        <label
-          className={`${layout === 'row' ? 'mt-2' : ''} ${
-            hasError ? 'text-rose-500' : ''
-          }`}
-          onClick={() => setIsOpened(true)}
-        >
-          {label}
-          {required ? '*' : ''}
-        </label>
-      )}
 
       <div
         onClick={() => setIsOpened((o) => !o)}
@@ -204,6 +205,6 @@ export const Select = forwardRef(function <
           )}
         </AnimatePresence>
       </div>
-    </div>
+    </FormField>
   )
 })
