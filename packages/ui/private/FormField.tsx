@@ -1,5 +1,5 @@
 import { VariantProps, cva } from 'class-variance-authority'
-import { MouseEvent, PropsWithChildren } from 'react'
+import { ForwardedRef, MouseEvent, PropsWithChildren, forwardRef } from 'react'
 
 const styles = cva([], {
   variants: {
@@ -18,31 +18,36 @@ type Props = {
   onClick?: (e: MouseEvent<HTMLLabelElement>) => void
 } & Omit<VariantProps<typeof styles>, `_${string}`>
 
-export const FormField = ({
-  layout,
-  label,
-  id,
-  hasError,
-  required,
-  children,
-  onClick,
-}: PropsWithChildren<Props>) => {
-  return (
-    <div className={styles({ layout, className: 'my-3' })}>
-      {label && (
-        <label
-          className={`${layout === 'row' ? 'mt-2' : 'mb-2'} ${
-            hasError ? 'text-rose-500' : ''
-          }`}
-          htmlFor={id}
-          onClick={onClick}
-        >
-          {label}
-          {required ? '*' : ''}
-        </label>
-      )}
+export const FormField = forwardRef(
+  (
+    {
+      layout,
+      label,
+      id,
+      hasError,
+      required,
+      children,
+      onClick,
+    }: PropsWithChildren<Props>,
+    ref: ForwardedRef<HTMLDivElement>,
+  ) => {
+    return (
+      <div ref={ref} className={styles({ layout, className: 'my-3' })}>
+        {label && (
+          <label
+            className={`${layout === 'row' ? 'mt-2' : 'mb-2'} ${
+              hasError ? 'text-rose-500' : ''
+            }`}
+            htmlFor={id}
+            onClick={onClick}
+          >
+            {label}
+            {required ? '*' : ''}
+          </label>
+        )}
 
-      {children}
-    </div>
-  )
-}
+        {children}
+      </div>
+    )
+  },
+)

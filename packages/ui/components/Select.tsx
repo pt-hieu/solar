@@ -3,11 +3,14 @@ import { AnimatePresence, motion } from 'framer-motion'
 import {
   ComponentProps,
   ForwardedRef,
+  MouseEvent,
   forwardRef,
   useCallback,
+  useRef,
   useState,
 } from 'react'
 import { FieldPath, useFormContext, useFormState } from 'react-hook-form'
+import { useClickAway } from 'react-use'
 
 import { styles as inputStyles } from './Input'
 
@@ -99,33 +102,45 @@ export const Select = forwardRef(function <
   })
 
   const selectItem = useCallback(
-    (inputOption: Extract<Option, { label: string }>) => () => {
-      if (multiple) {
-        setSelectedOptions((selectedOptions) => {
-          let results = [...selectedOptions]
+    (inputOption: Extract<Option, { label: string }>) =>
+      (e: MouseEvent<HTMLDivElement>) => {
+        if (multiple) {
+          e.stopPropagation()
 
-          if (!selectedOptions.some((opt) => opt.value === inputOption.value))
-            results.push(inputOption)
-          else
-            results = results.filter((opt) => opt.value !== inputOption.value)
+          setSelectedOptions((selectedOptions) => {
+            let results = [...selectedOptions]
 
-          setValue(name, results.map((r) => r.value) as any)
+            if (!selectedOptions.some((opt) => opt.value === inputOption.value))
+              results.push(inputOption)
+            else
+              results = results.filter((opt) => opt.value !== inputOption.value)
 
-          return results
-        })
+            setValue(name, results.map((r) => r.value) as any)
 
-        return
-      }
+            return results
+          })
 
-      setSelectedOptions([inputOption])
-      setValue(name, inputOption.value as any)
-    },
+          return
+        }
+
+        setSelectedOptions([inputOption])
+        setValue(name, inputOption.value as any)
+      },
     [name, multiple],
+  )
+
+  const fieldRef = useRef<HTMLDivElement>(null)
+  useClickAway(
+    fieldRef,
+    useCallback(() => {
+      setIsOpened(false)
+    }, []),
   )
 
   return (
     <FormField
       label={label}
+      ref={fieldRef}
       hasError={hasError}
       layout={layout}
       required={required}
