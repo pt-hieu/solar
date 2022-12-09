@@ -2,7 +2,7 @@ import { VariantProps, cva } from 'class-variance-authority'
 import { AnimatePresence, motion } from 'framer-motion'
 import { MouseEvent, PropsWithChildren } from 'react'
 
-const styles = cva(['rounded-md', 'duration-100'], {
+const styles = cva(['rounded-[3px]', 'duration-100'], {
   variants: {
     intent: {
       primary: ['bg-sky-500', 'hover:bg-sky-400', 'text-white'],
