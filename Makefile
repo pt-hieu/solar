@@ -1,8 +1,8 @@
-ui/install:
+moon/install:
 	pnpm add ${1} --filter=ui --save-dev
 
-ui/dev:
-	make ui cmd="run dev"
+moon/dev:
+	make moon cmd="run dev"
 
-ui:
-	pnpm turbo ${cmd} --filter=ui
+moon:
+	pnpm turbo ${cmd} --filter=moon
