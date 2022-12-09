@@ -7,6 +7,7 @@ import { Input } from '../components/Input'
 import { createSchema, pipe, required, string } from '../helpers/form'
 
 export default {
+  title: 'Component/Form',
   component: Form,
 } as ComponentMeta<typeof Form>
 

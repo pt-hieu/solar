@@ -6,6 +6,7 @@ import { Form } from '../components/Form'
 import { Select } from '../components/Select'
 
 export default {
+  title: 'Component/Select',
   component: Select,
 } as ComponentMeta<typeof Select>
 
