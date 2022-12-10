@@ -90,6 +90,7 @@ export const Tooltip = forwardRef(function <
       {children}
 
       <motion.div
+        initial={{ x: '-50%', visibility: 'hidden' }}
         variants={variants}
         animate={control}
         transition={{ duration: 0.25 }}
