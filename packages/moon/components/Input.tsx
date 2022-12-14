@@ -50,7 +50,6 @@ const Input = forwardRef(function <
   const { ref: formRef, ...regis } = register(name)
 
   const { errors } = useFormState({ control })
-  const error = errors[name]
 
   return (
     <FormField

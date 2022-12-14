@@ -20,6 +20,12 @@ export default {
         ],
       },
     },
+    size: {
+      control: {
+        type: 'radio',
+        options: ['small', 'medium'],
+      },
+    },
     outlined: {
       control: {
         type: 'select',
@@ -46,4 +52,5 @@ Default.args = {
   outlined: undefined,
   closable: true,
   disabled: false,
+  size: 'medium',
 } as ComponentProps<typeof Tag>

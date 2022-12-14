@@ -4,8 +4,10 @@ import { PropsWithChildren, forwardRef } from 'react'
 const styles = cva([], {
   variants: {
     _element: {
-      root: ['rounded-[3px] px-2 py-1 cursor-default text-white'],
-      closeIcon: ['fa fa-times mr-2 text-sm'],
+      root: [
+        'rounded-[3px] px-2 py-1 cursor-default text-white w-max grid grid-cols-[min-content,1fr] gap-2',
+      ],
+      closeIcon: ['fa fa-times text-sm'],
       closeButton: ['relative top-[0.5px]'],
     },
     color: {
@@ -22,6 +24,16 @@ const styles = cva([], {
       success: 'text-emerald-500 ring-1 ring-emerald-500 bg-transparent',
       trivial: 'text-slate-500 ring-1 ring-slate-500 bg-transparent',
     },
+    size: {
+      small: 'text-sm !py-[1.5px]',
+      medium: '',
+    },
+    _smallCloseIcon: {
+      true: '!text-xs',
+    },
+  },
+  defaultVariants: {
+    size: 'medium',
   },
 })
 
@@ -34,6 +46,7 @@ type Variants = PrimitiveVariants &
   (
     | { color: ColorVariant; outlined?: never }
     | { color?: never; outlined: OutlinedVariant }
+    | { color?: never; outlined?: never }
   )
 
 type TagCloseProps =
@@ -44,22 +57,39 @@ type Props = {} & TagCloseProps & Variants
 
 export const Tag = forwardRef<HTMLSpanElement, PropsWithChildren<Props>>(
   function (
-    { children, closable, onClose, disabled, color = 'primary', outlined },
+    {
+      children,
+      closable,
+      onClose,
+      disabled,
+      color = 'primary',
+      outlined,
+      size,
+    },
     ref,
   ) {
     return (
-      <span className={styles({ _element: 'root', color, outlined })} ref={ref}>
+      <span
+        className={styles({ _element: 'root', color, outlined, size })}
+        ref={ref}
+      >
         {closable && (
           <button
             className={styles({ _element: 'closeButton' })}
             onClick={onClose}
             disabled={disabled}
+            type="button"
           >
-            <span className={styles({ _element: 'closeIcon' })} />
+            <span
+              className={styles({
+                _element: 'closeIcon',
+                _smallCloseIcon: size === 'small',
+              })}
+            />
           </button>
         )}
 
-        {children}
+        <span className="w-max">{children}</span>
       </span>
     )
   },
