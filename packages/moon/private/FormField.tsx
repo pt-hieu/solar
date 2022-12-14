@@ -15,7 +15,7 @@ type Props = {
   id?: string
   required?: boolean
   hasError?: boolean
-  onClick?: (e: MouseEvent<HTMLLabelElement>) => void
+  onLabelClick?: (e: MouseEvent<HTMLLabelElement>) => void
 } & Omit<VariantProps<typeof styles>, `_${string}`>
 
 export const FormField = forwardRef(
@@ -27,7 +27,7 @@ export const FormField = forwardRef(
       hasError,
       required,
       children,
-      onClick,
+      onLabelClick,
     }: PropsWithChildren<Props>,
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
@@ -39,7 +39,7 @@ export const FormField = forwardRef(
               hasError ? 'text-rose-500' : ''
             }`}
             htmlFor={id}
-            onClick={onClick}
+            onClick={onLabelClick}
           >
             {label}
             {required ? '*' : ''}

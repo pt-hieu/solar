@@ -1,5 +1,5 @@
 import { VariantProps, cva } from 'class-variance-authority'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import {
   ComponentProps,
   ForwardedRef,
@@ -16,6 +16,7 @@ import { styles as inputStyles } from './Input'
 
 import { mergeRefs } from '../helpers/ref'
 import { FormField } from '../private/FormField'
+import { SelectPanel } from '../private/SelectPanel'
 
 const styles = cva([], {
   variants: {
@@ -103,9 +104,9 @@ export const Select = forwardRef(function <
 
   const selectItem = useCallback(
     (inputOption: Extract<Option, { label: string }>) =>
-      (e: MouseEvent<HTMLDivElement>) => {
+      (e?: MouseEvent<HTMLDivElement>) => {
         if (multiple) {
-          e.stopPropagation()
+          e?.stopPropagation()
 
           setSelectedOptions((selectedOptions) => {
             let results = [...selectedOptions]
@@ -125,6 +126,7 @@ export const Select = forwardRef(function <
 
         setSelectedOptions([inputOption])
         setValue(name, inputOption.value as any)
+        setIsOpened(false)
       },
     [name, multiple],
   )
@@ -137,6 +139,30 @@ export const Select = forwardRef(function <
     }, []),
   )
 
+  const handleEnterHit = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key !== 'Enter') return
+      if (isOpened) return
+
+      setIsOpened(true)
+    },
+    [isOpened],
+  )
+
+  const handleInputFocus = useCallback(
+    ({ isFocused }: { isFocused: boolean }) =>
+      () => {
+        if (isFocused) {
+          document.addEventListener('keydown', handleEnterHit)
+          return
+        }
+
+        setIsOpened(false)
+        document.removeEventListener('keydown', handleEnterHit)
+      },
+    [],
+  )
+
   return (
     <FormField
       label={label}
@@ -144,17 +170,21 @@ export const Select = forwardRef(function <
       hasError={hasError}
       layout={layout}
       required={required}
-      onClick={() => setIsOpened(true)}
+      onLabelClick={() => setIsOpened(true)}
     >
       <input ref={mergeRefs([ref, propsRef])} type="text" hidden {...regis} />
 
       <div
+        tabIndex={0}
+        onFocus={handleInputFocus({ isFocused: true })}
+        onBlur={handleInputFocus({ isFocused: false })}
         onClick={() => setIsOpened((o) => !o)}
         className={styles({
           _focus: isOpened,
           className: inputStyles({
             _element: 'input',
-            className: 'cursor-pointer relative',
+            className:
+              'cursor-pointer relative focus-visible:ring-sky-500 focus-visible:outline-none group',
           }),
         })}
       >
@@ -166,51 +196,22 @@ export const Select = forwardRef(function <
         <motion.span
           initial={{ rotate: '0deg' }}
           animate={{ ...(isOpened && { rotate: '180deg' }) }}
-          className={caretStyle({ active: isOpened })}
+          className={caretStyle({
+            active: isOpened,
+            className: 'group-focus-visible:text-sky-500',
+          })}
           style={{
             transformOrigin: 'center',
           }}
         />
 
-        <AnimatePresence mode="wait">
-          {isOpened && (
-            <motion.div
-              className={styles({
-                _element: 'option-container',
-                class: 'absolute top-[calc(100%+10px)] left-0',
-              })}
-              style={{ transformOrigin: 'bottom left' }}
-              initial={{ maxHeight: '0px', opacity: 0 }}
-              animate={{ maxHeight: '300px', opacity: 1 }}
-              exit={{
-                maxHeight: '0px',
-                opacity: 0,
-              }}
-              transition={{ ease: 'linear', duration: 0.15 }}
-            >
-              {parsedOptions.map(({ label, value }) => (
-                <div
-                  onClick={selectItem({ label, value })}
-                  className={styles({
-                    _element: 'option-item',
-                  })}
-                  key={value}
-                >
-                  {multiple && (
-                    <span
-                      className={`fa fa-check mr-2 text-xs ${
-                        selectedOptions.some((opt) => opt.value === value)
-                          ? 'visible'
-                          : 'invisible'
-                      }`}
-                    />
-                  )}
-                  {label}
-                </div>
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <SelectPanel
+          options={parsedOptions}
+          selectedOptions={selectedOptions}
+          multiple={multiple}
+          onItemSelect={selectItem}
+          open={isOpened}
+        />
       </div>
     </FormField>
   )

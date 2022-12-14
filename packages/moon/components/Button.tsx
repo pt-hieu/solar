@@ -2,39 +2,64 @@ import { VariantProps, cva } from 'class-variance-authority'
 import { AnimatePresence, motion } from 'framer-motion'
 import { MouseEvent, PropsWithChildren } from 'react'
 
-const styles = cva(['rounded-[3px]', 'duration-100'], {
-  variants: {
-    intent: {
-      primary: ['bg-sky-500', 'hover:bg-sky-400', 'text-white'],
-      outline: [
-        'ring-1',
-        'text-sky-500',
-        'ring-sky-500',
-        'hover:border-sky-400',
-        'hover:text-sky-400',
-      ],
-      danger: ['bg-rose-500', 'hover:bg-rose-400', 'text-white'],
-      ghost: ['text-sky-500', 'hover:text-sky-400', 'hover:bg-slate-100'],
+const styles = cva(
+  ['rounded-[3px]', 'duration-100', 'focus-visible:outline-none'],
+  {
+    variants: {
+      intent: {
+        primary: [
+          'bg-sky-500',
+          'hover:bg-sky-400 focus-visible:bg-sky-400',
+          'text-white',
+        ],
+        outline: [
+          'ring-1',
+          'text-sky-500',
+          'ring-sky-500',
+          'hover:text-sky-400 hover:ring-sky-400',
+          'focus-visible:text-sky-400 focus-visible:ring-sky-400',
+        ],
+        danger: [
+          'bg-rose-500',
+          'hover:bg-rose-400 focus-visible:bg-rose-400',
+          'text-white',
+        ],
+        ghost: [
+          'text-sky-500',
+          'hover:text-sky-400 focus-visible:text-sky-400',
+          'hover:bg-slate-100 focus-visible:bg-slate-100',
+        ],
+      },
+      disabled: {
+        true: [
+          'text-white',
+          'bg-slate-500',
+          'hover:bg-slate-500',
+          'focus-visible:bg-slate-500',
+        ],
+      },
+      _disabledGhost: {
+        true: [
+          'text-slate-500',
+          'bg-transparent',
+          'hover:bg-transparent',
+          'focus-visible:bg-transparent',
+        ],
+      },
+      loading: {
+        true: [],
+      },
+      size: {
+        normal: ['px-3', 'py-2'],
+        compact: ['px-3', 'py-1'],
+      },
     },
-    disabled: {
-      true: ['text-white', 'bg-slate-500', 'hover:bg-slate-500'],
-    },
-    _disabledGhost: {
-      true: ['text-slate-500', 'bg-transparent', 'hover:bg-transparent'],
-    },
-    loading: {
-      true: [],
-    },
-    size: {
-      normal: ['px-3', 'py-2'],
-      compact: ['px-3', 'py-1'],
+    defaultVariants: {
+      intent: 'primary',
+      size: 'normal',
     },
   },
-  defaultVariants: {
-    intent: 'primary',
-    size: 'normal',
-  },
-})
+)
 
 type Props = {
   onClick?: (e: MouseEvent<HTMLButtonElement>) => void | Promise<void>
