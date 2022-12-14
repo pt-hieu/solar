@@ -84,9 +84,6 @@ export const Select = forwardRef(function <
 
   const { errors } = useFormState({ control })
 
-  const error = errors[name]
-  const hasError = !!error
-
   const parsedOptions = options.map((o) => {
     if (typeof o === 'string') return { label: o, value: o }
     return o
@@ -167,7 +164,7 @@ export const Select = forwardRef(function <
     <FormField
       label={label}
       ref={fieldRef}
-      hasError={hasError}
+      error={errors[name]}
       layout={layout}
       required={required}
       onLabelClick={() => setIsOpened(true)}

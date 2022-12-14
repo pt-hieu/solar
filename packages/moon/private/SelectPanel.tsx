@@ -1,12 +1,6 @@
 import { VariantProps, cva } from 'class-variance-authority'
 import { AnimatePresence, motion } from 'framer-motion'
-import {
-  ForwardedRef,
-  forwardRef,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from 'react'
+import { ForwardedRef, forwardRef, useLayoutEffect, useState } from 'react'
 import { useKey } from 'react-use'
 
 const styles = cva([], {

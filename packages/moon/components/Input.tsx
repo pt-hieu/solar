@@ -1,5 +1,4 @@
 import { type VariantProps, cva } from 'class-variance-authority'
-import { AnimatePresence, motion } from 'framer-motion'
 import {
   ComponentProps,
   ForwardedRef,
@@ -51,42 +50,25 @@ const Input = forwardRef(function <
   const { ref: formRef, ...regis } = register(name)
 
   const { errors } = useFormState({ control })
-
   const error = errors[name]
-  const hasError = !!error
 
   return (
     <FormField
       label={label}
-      hasError={hasError}
+      error={errors[name]}
       id={id}
       layout={layout}
       required={required}
     >
-      <div>
-        <input
-          className={styles({ _element: 'input', _hasError: hasError })}
-          id={id}
-          // @ts-expect-error: false positive
-          type={type}
-          placeholder={placeholder}
-          {...regis}
-          ref={mergeRefs([formRef, ref])}
-        />
-
-        <AnimatePresence>
-          {error?.message && (
-            <motion.div
-              initial={{ marginTop: 0, maxHeight: 0, opacity: 0 }}
-              animate={{ marginTop: '8px', maxHeight: '30px', opacity: 1 }}
-              exit={{ marginTop: 0, maxHeight: 0, opacity: 0 }}
-              className="text-rose-500"
-            >
-              {error.message.toString().replace('$$', label || 'This field')}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+      <input
+        className={styles({ _element: 'input', _hasError: !!errors[name] })}
+        id={id}
+        // @ts-expect-error: false positive
+        type={type}
+        placeholder={placeholder}
+        {...regis}
+        ref={mergeRefs([formRef, ref])}
+      />
     </FormField>
   )
 })
