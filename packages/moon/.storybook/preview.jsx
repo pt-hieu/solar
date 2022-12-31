@@ -9,7 +9,7 @@ export const parameters = {
       date: /Date$/,
     },
   },
-};
+}
 
 /** @type {Array<import('@storybook/react').DecoratorFn>} */
-export const decorators = [(Story) => (<Story />)]
+export const decorators = [(Story) => <Story />]

@@ -1,5 +1,5 @@
 moon/install:
-	pnpm add ${1} --filter=ui --save-dev
+	pnpm add ${1} --filter=moon --save-dev
 
 moon/dev:
 	make moon cmd="run dev"

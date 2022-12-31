@@ -103,7 +103,7 @@ export const Button = ({
             style={{ '--fa-animation-timing': 'ease-in-out' }}
             className={`${
               loading ? 'fa-solid fa-circle-notch fa-spin' : icon
-            } relative top-[0.5px] mr-2`}
+            } relative ${children ? 'top-[0.5px] mr-2' : 'top-[2px]'}`}
             key={loading ? 'loading' : 'not-loading'}
             initial={{ maxWidth: '0px', opacity: 0 }}
             animate={{ maxWidth: '30px', opacity: 1 }}
