@@ -84,6 +84,8 @@ const Modal: FC<PropsWithChildren<Props>> = function ({
                     onClick={() => onClose?.('close-icon')}
                     intent="ghost"
                     icon="fa fa-times"
+                    size="compact"
+                    rounded
                   />
                 )}
               </div>

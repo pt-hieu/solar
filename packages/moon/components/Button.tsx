@@ -49,6 +49,9 @@ const styles = cva(
       loading: {
         true: [],
       },
+      rounded: {
+        true: ['!rounded-full', 'aspect-square'],
+      },
       size: {
         normal: ['px-3', 'py-2'],
         compact: ['px-3', 'py-1'],
@@ -78,6 +81,7 @@ export const Button = ({
   icon,
   loading,
   onClick,
+  rounded,
 }: PropsWithChildren<Props>) => {
   const isDisabled = disabled || loading
   const disabledGhost = isDisabled && intent === 'ghost'
@@ -89,6 +93,7 @@ export const Button = ({
         disabled: disabledGhost ? undefined : isDisabled,
         className,
         size,
+        rounded,
         _disabledGhost: disabledGhost,
       })}
       disabled={isDisabled || undefined}
