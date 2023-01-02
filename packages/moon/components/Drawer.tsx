@@ -50,7 +50,7 @@ const Drawer = forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
           {open && (
             <div
               className={styles({ _element: 'root' })}
-              ref={mergeRefs([internalRef, ref])}
+              ref={mergeRefs(internalRef, ref)}
             >
               <motion.div
                 ref={containerRef}

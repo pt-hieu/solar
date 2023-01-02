@@ -169,7 +169,7 @@ export const Select = forwardRef(function <
       required={required}
       onLabelClick={() => setIsOpened(true)}
     >
-      <input ref={mergeRefs([ref, propsRef])} type="text" hidden {...regis} />
+      <input ref={mergeRefs(ref, propsRef)} type="text" hidden {...regis} />
 
       <div
         tabIndex={0}

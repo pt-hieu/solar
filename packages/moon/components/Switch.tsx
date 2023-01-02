@@ -61,7 +61,7 @@ const Switch = forwardRef(function <
         type="checkbox"
         className="hidden"
         {...regis}
-        ref={mergeRefs([formRef, ref])}
+        ref={mergeRefs(formRef, ref)}
       />
 
       <button

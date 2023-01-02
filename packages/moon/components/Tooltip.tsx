@@ -85,7 +85,7 @@ export const Tooltip = forwardRef(function <
     <Tag
       {...restProps}
       className={styles({ _element: 'root', className: restProps.className })}
-      ref={mergeRefs([ref, rootRef])}
+      ref={mergeRefs(ref, rootRef)}
     >
       {children}
 

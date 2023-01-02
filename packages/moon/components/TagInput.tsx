@@ -90,7 +90,7 @@ export const TagInput = forwardRef(function <
       layout={layout}
       required={required}
     >
-      <input type="hidden" {...regis} ref={mergeRefs([formRef])} />
+      <input type="hidden" {...regis} ref={mergeRefs(formRef)} />
       <div
         tabIndex={0}
         onClick={() => internalInput.current?.focus()}

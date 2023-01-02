@@ -66,7 +66,7 @@ const Input = forwardRef(function <
         type={type}
         placeholder={placeholder}
         {...regis}
-        ref={mergeRefs([formRef, ref])}
+        ref={mergeRefs(formRef, ref)}
       />
     </FormField>
   )
