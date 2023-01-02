@@ -26,6 +26,7 @@ type Props<T extends Record<string, any>> = {
     | FieldError
     | Merge<FieldError, FieldErrorsImpl<DeepRequired<T>[Path<T>]>>
   onLabelClick?: (e: MouseEvent<HTMLLabelElement>) => void
+  labelClassname?: string
 } & Omit<VariantProps<typeof styles>, `_${string}`>
 
 export const FormField = forwardRef(function <T extends Record<string, any>>(
@@ -37,6 +38,7 @@ export const FormField = forwardRef(function <T extends Record<string, any>>(
     error,
     children,
     onLabelClick,
+    labelClassname,
   }: PropsWithChildren<Props<T>>,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
@@ -48,7 +50,7 @@ export const FormField = forwardRef(function <T extends Record<string, any>>(
         <label
           className={`${layout === 'row' ? 'mt-2' : 'mb-2'} ${
             hasError ? 'text-rose-500' : ''
-          }`}
+          } select-none ${labelClassname}`}
           htmlFor={id}
           onClick={onLabelClick}
         >
