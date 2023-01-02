@@ -31,7 +31,7 @@ type Props<T extends Record<string, any>> = {
 
 export const FormField = forwardRef(function <T extends Record<string, any>>(
   {
-    layout,
+    layout = 'column',
     label,
     id,
     required,
